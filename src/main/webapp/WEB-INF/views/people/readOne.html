@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Person</title>
+</head>
+<body>
+<p th:text="${human.getSurname()  + ', ' + human.getName() + ' '
+ + human.getPatronymic()}"></p>
+<p th:text="${'Год рождения: '+ human.getYearOfBirth()}"></p>
+<p th:text="${'Email: '+ human.getEmail()}"></p>
+<br/>
+<hr/>
+<div th:if="${books.isEmpty()}">
+    <p>Человек пока не взял ни одной книги</p>
+    <a href="/books">Выбрать книгу</a>
+</div>
+<div th:unless="${books.isEmpty()}">
+    <p>Книги: </p>
+    <div th:each="book : ${books}">
+        <a th:href="@{/books/{id}(id=${book.getId()})}" th:text="${book.getName()+', '+book.getAuthorName()+
+     ', '+book.getAuthorSurname()+', '+book.getYear()}">VALUE</a>
+    </div>
+    <br/>
+    <form th:method="PATCH" th:action="@{/people/{id}/unAppointAllFromHuman(id=${human.getId()})}" th:object="${human}">
+        <input type="submit" value="Очистить спискок книг"/>
+    </form>
+    <br/>
+</div>
+<a th:href="@{/people/{id}/edit(id=${human.getId()})}">Изменить</a>
+<br/>
+<form th:method="DELETE" th:action="@{/people/{id}(id=${human.getId()})}" th:object="${human}">
+    <input type="submit" value="Удалить"/>
+</form>
+<br/>
+<a href="/people">Спискок всех читателей</a>
+</body>
+</html>
